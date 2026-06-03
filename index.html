@@ -13,13 +13,18 @@
       --blue:  #2792dc;
       --aqua:  #9ce6e6;
       --stone: #7a8fa0;
-      --mist:  rgba(156,230,230,0.08);
       --line:  rgba(156,230,230,0.14);
     }
  
-    html, body { height: 100%; background: var(--deep); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+    html, body {
+      height: 100%;
+      background: var(--deep);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
  
-    /* ambient glow */
     body::before {
       content: '';
       position: fixed; inset: 0; pointer-events: none; z-index: 0;
@@ -36,7 +41,7 @@
       grid-template-rows: auto 1fr auto;
     }
  
-    /* ── HEADER ── */
+    /* HEADER */
     header {
       grid-column: 1 / -1;
       display: flex;
@@ -65,13 +70,13 @@
       border-radius: 100px;
     }
  
-    /* ── LEFT PANEL ── */
+    /* LEFT */
     .left {
       grid-column: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 56px 80px 56px;
+      padding: 80px 56px;
       border-right: 1px solid var(--line);
     }
  
@@ -102,26 +107,11 @@
       margin-bottom: 48px;
     }
  
-    /* capability list */
     .caps { display: flex; flex-direction: column; gap: 12px; }
+    .cap { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--stone); }
+    .cap-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--aqua); flex-shrink: 0; opacity: 0.6; }
  
-    .cap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--stone);
-    }
- 
-    .cap-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--aqua);
-      flex-shrink: 0;
-      opacity: 0.6;
-    }
- 
-    /* ── RIGHT PANEL ── */
+    /* RIGHT */
     .right {
       grid-column: 2;
       display: flex;
@@ -129,23 +119,19 @@
       align-items: center;
       justify-content: center;
       padding: 80px 56px;
-      gap: 40px;
+      gap: 32px;
     }
  
+    /* Skye card — this is the widget container */
     .skye-card {
       width: 100%;
-      max-width: 380px;
+      max-width: 400px;
       background: rgba(255,255,255,0.03);
       border: 1px solid var(--line);
       border-radius: 28px;
       padding: 40px 36px 36px;
       text-align: center;
-    }
- 
-    .orb-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 24px;
+      backdrop-filter: blur(12px);
     }
  
     .skye-name {
@@ -153,7 +139,7 @@
       font-size: 32px;
       font-weight: 300;
       font-style: italic;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
  
     .skye-role {
@@ -161,41 +147,40 @@
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--stone);
-      margin-bottom: 28px;
+      margin-bottom: 32px;
     }
  
-    .divider-h {
-      height: 1px;
-      background: var(--line);
-      margin: 0 0 28px;
-    }
- 
-    .widget-row {
+    /* The actual widget override — force it to fill the card */
+    .widget-container {
+      width: 100%;
+      min-height: 280px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
       margin-bottom: 20px;
     }
  
-    .call-label {
-      font-size: 13px;
-      color: var(--stone);
+    /* Override ElevenLabs widget to fill container as expanded overlay */
+    elevenlabs-convai {
+      --overlay-padding: 0px;
+      --button-radius: 18px;
+      --sheet-radius: 20px;
+      --compact-sheet-radius: 20px;
+      width: 100% !important;
+      max-width: 100% !important;
     }
  
     .hint {
       font-size: 11px;
       color: rgba(122,143,160,0.5);
       letter-spacing: 0.06em;
+      margin-top: 8px;
     }
  
-    /* info strip */
+    /* Info strip */
     .info-strip {
       width: 100%;
-      max-width: 380px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      max-width: 400px;
     }
  
     .info-row {
@@ -206,22 +191,12 @@
       border-bottom: 1px solid rgba(156,230,230,0.07);
       font-size: 12px;
     }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--stone); }
+    .info-value { color: rgba(255,255,255,0.7); }
+    .info-value a { color: var(--blue); text-decoration: none; }
  
-    .info-label {
-      color: var(--stone);
-      letter-spacing: 0.06em;
-    }
- 
-    .info-value {
-      color: rgba(255,255,255,0.7);
-    }
- 
-    .info-value a {
-      color: var(--blue);
-      text-decoration: none;
-    }
- 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer {
       grid-column: 1 / -1;
       border-top: 1px solid var(--line);
@@ -230,42 +205,40 @@
       align-items: center;
       justify-content: space-between;
     }
+    .footer-left { font-size: 11px; color: rgba(122,143,160,0.5); }
+    .footer-right { font-size: 11px; color: rgba(122,143,160,0.4); }
  
-    .footer-left {
-      font-size: 11px;
-      color: rgba(122,143,160,0.5);
-      letter-spacing: 0.06em;
-    }
- 
-    .footer-right {
-      font-size: 11px;
-      color: rgba(122,143,160,0.4);
-    }
- 
-    /* animations */
+    /* Animations */
     [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s ease; }
     [data-anim].visible { opacity: 1; transform: translateY(0); }
  
-    /* mobile */
+    /* Mobile */
     @media (max-width: 768px) {
       .page { grid-template-columns: 1fr; }
       header { padding: 20px 24px; }
       .left { grid-column: 1; border-right: none; border-bottom: 1px solid var(--line); padding: 48px 24px; }
-      .right { grid-column: 1; padding: 48px 24px; }
+      .right { grid-column: 1; padding: 40px 24px; }
       footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+ 
+    /* Force ElevenLabs widget variant=full to expand inside our card */
+    elevenlabs-convai::part(widget) {
+      position: relative !important;
+      inset: unset !important;
+      width: 100% !important;
+      box-shadow: none !important;
+      border-radius: 16px !important;
     }
   </style>
 </head>
 <body>
 <div class="page">
  
-  <!-- HEADER -->
   <header>
     <div class="logo">Rain <em>Medi</em> Spa <span style="color:var(--stone);font-size:18px">& Salon</span></div>
     <div class="header-tag">AI Receptionist — Demo</div>
   </header>
  
-  <!-- LEFT -->
   <div class="left">
     <div class="eyebrow" data-anim>Meet Skye</div>
     <h1 class="hero-title" data-anim>Your front desk,<br><em>always on.</em></h1>
@@ -281,17 +254,19 @@
     </div>
   </div>
  
-  <!-- RIGHT -->
   <div class="right">
     <div class="skye-card" data-anim>
       <div class="skye-name">Skye</div>
       <div class="skye-role">Virtual Receptionist · Rain Medi Spa</div>
-      <div class="divider-h"></div>
-      <div class="widget-row">
-        <span class="call-label">Tap to speak with Skye</span>
-        <elevenlabs-convai agent-id="agent_8101kt57yeffeqwb28vm7t8em1ps"></elevenlabs-convai>
+ 
+      <div class="widget-container">
+        <elevenlabs-convai
+          agent-id="agent_8101kt57yeffeqwb28vm7t8em1ps"
+          variant="full"
+        ></elevenlabs-convai>
       </div>
-      <div class="hint">Talk naturally — she'll take it from there</div>
+ 
+      <div class="hint">Speak naturally — Skye will handle the rest</div>
     </div>
  
     <div class="info-strip" data-anim>
@@ -307,14 +282,13 @@
         <span class="info-label">Hours</span>
         <span class="info-value">Mon 10–4 · Tue–Fri 10–9 · Sat 9–6 · Sun 10–6</span>
       </div>
-      <div class="info-row" style="border-bottom:none">
+      <div class="info-row">
         <span class="info-label">Website</span>
         <span class="info-value"><a href="https://rainspasalon.com" target="_blank">rainspasalon.com</a></span>
       </div>
     </div>
   </div>
  
-  <!-- FOOTER -->
   <footer>
     <div class="footer-left">Rain Medi Spa & Salon · North York, Ontario</div>
     <div class="footer-right">Powered by Quantra AI</div>
