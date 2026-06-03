@@ -7,263 +7,333 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
     :root {
-      --rain-deep: #0d1a2b;
-      --rain-blue: #2792dc;
-      --rain-aqua: #9ce6e6;
-      --rain-cream: #f5f0e8;
-      --rain-stone: #8a9aaa;
-      --rain-white: #ffffff;
+      --deep:  #08111e;
+      --blue:  #2792dc;
+      --aqua:  #9ce6e6;
+      --stone: #7a8fa0;
+      --mist:  rgba(156,230,230,0.08);
+      --line:  rgba(156,230,230,0.14);
     }
-
-    html, body {
-      height: 100%;
-      background: var(--rain-deep);
-      color: var(--rain-white);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-    }
-
-    /* Background mesh */
+ 
+    html, body { height: 100%; background: var(--deep); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+ 
+    /* ambient glow */
     body::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(39, 146, 220, 0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 90% 80%, rgba(156, 230, 230, 0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(39, 146, 220, 0.04) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
+        radial-gradient(ellipse 70% 55% at 15% 25%, rgba(39,146,220,.13) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 70% at 85% 75%, rgba(156,230,230,.09) 0%, transparent 55%);
     }
-
-    /* Grain overlay */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      opacity: 0.4;
-      pointer-events: none;
-      z-index: 0;
-    }
-
+ 
     .page {
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
       min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+    }
+ 
+    /* ── HEADER ── */
+    header {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 56px;
+      border-bottom: 1px solid var(--line);
+    }
+ 
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+    .logo em { font-style: italic; color: var(--aqua); }
+ 
+    .header-tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--blue);
+      padding: 6px 14px;
+      border: 1px solid rgba(39,146,220,.3);
+      border-radius: 100px;
+    }
+ 
+    /* ── LEFT PANEL ── */
+    .left {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 56px 80px 56px;
+      border-right: 1px solid var(--line);
+    }
+ 
+    .eyebrow {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--aqua);
+      margin-bottom: 24px;
+    }
+ 
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .hero-title em { font-style: italic; color: var(--aqua); }
+ 
+    .hero-body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--stone);
+      max-width: 420px;
+      margin-bottom: 48px;
+    }
+ 
+    /* capability list */
+    .caps { display: flex; flex-direction: column; gap: 12px; }
+ 
+    .cap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--stone);
+    }
+ 
+    .cap-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--aqua);
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+ 
+    /* ── RIGHT PANEL ── */
+    .right {
+      grid-column: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 48px 24px;
+      padding: 80px 56px;
+      gap: 40px;
     }
-
-    /* Top label */
-    .label {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--rain-aqua);
-      margin-bottom: 32px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.1s forwards;
-    }
-
-    /* Logo / name */
-    .brand {
-      text-align: center;
-      margin-bottom: 16px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.2s forwards;
-    }
-
-    .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 8vw, 72px);
-      font-weight: 300;
-      letter-spacing: 0.05em;
-      line-height: 1;
-      color: var(--rain-white);
-    }
-
-    .brand-name em {
-      font-style: italic;
-      color: var(--rain-aqua);
-    }
-
-    .brand-sub {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rain-stone);
-      margin-top: 10px;
-    }
-
-    /* Divider */
-    .divider {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, transparent, var(--rain-aqua), transparent);
-      margin: 32px auto;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.35s forwards;
-    }
-
-    /* Card */
-    .card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(156, 230, 230, 0.12);
-      border-radius: 24px;
-      padding: 48px 40px;
-      max-width: 480px;
+ 
+    .skye-card {
       width: 100%;
+      max-width: 380px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 40px 36px 36px;
       text-align: center;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.45s forwards;
     }
-
-    .skye-label {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--rain-blue);
-      margin-bottom: 16px;
-    }
-
-    .card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 300;
-      font-style: italic;
-      color: var(--rain-white);
-      margin-bottom: 12px;
-      line-height: 1.3;
-    }
-
-    .card-body {
-      font-size: 14px;
-      font-weight: 300;
-      line-height: 1.7;
-      color: var(--rain-stone);
-      margin-bottom: 36px;
-    }
-
-    /* Widget container */
-    .widget-wrap {
+ 
+    .orb-wrap {
       display: flex;
       justify-content: center;
+      margin-bottom: 24px;
+    }
+ 
+    .skye-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+ 
+    .skye-role {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--stone);
       margin-bottom: 28px;
     }
-
+ 
+    .divider-h {
+      height: 1px;
+      background: var(--line);
+      margin: 0 0 28px;
+    }
+ 
+    .widget-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+ 
+    .call-label {
+      font-size: 13px;
+      color: var(--stone);
+    }
+ 
     .hint {
       font-size: 11px;
-      color: rgba(138, 154, 170, 0.6);
-      letter-spacing: 0.05em;
+      color: rgba(122,143,160,0.5);
+      letter-spacing: 0.06em;
     }
-
-    /* Capabilities */
-    .caps {
+ 
+    /* info strip */
+    .info-strip {
+      width: 100%;
+      max-width: 380px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 32px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.6s forwards;
+      flex-direction: column;
+      gap: 10px;
     }
-
-    .cap {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--rain-stone);
-      padding: 6px 14px;
-      border: 1px solid rgba(138, 154, 170, 0.2);
-      border-radius: 100px;
+ 
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(156,230,230,0.07);
+      font-size: 12px;
     }
-
-    /* Footer */
-    .footer {
-      margin-top: 48px;
-      text-align: center;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.75s forwards;
+ 
+    .info-label {
+      color: var(--stone);
+      letter-spacing: 0.06em;
     }
-
-    .footer-text {
-      font-size: 11px;
-      color: rgba(138, 154, 170, 0.4);
-      letter-spacing: 0.08em;
+ 
+    .info-value {
+      color: rgba(255,255,255,0.7);
     }
-
-    .footer-text a {
-      color: rgba(39, 146, 220, 0.6);
+ 
+    .info-value a {
+      color: var(--blue);
       text-decoration: none;
     }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
+ 
+    /* ── FOOTER ── */
+    footer {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      padding: 20px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-
-    @media (max-width: 520px) {
-      .card { padding: 36px 24px; }
+ 
+    .footer-left {
+      font-size: 11px;
+      color: rgba(122,143,160,0.5);
+      letter-spacing: 0.06em;
+    }
+ 
+    .footer-right {
+      font-size: 11px;
+      color: rgba(122,143,160,0.4);
+    }
+ 
+    /* animations */
+    [data-anim] { opacity: 0; transform: translateY(14px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    [data-anim].visible { opacity: 1; transform: translateY(0); }
+ 
+    /* mobile */
+    @media (max-width: 768px) {
+      .page { grid-template-columns: 1fr; }
+      header { padding: 20px 24px; }
+      .left { grid-column: 1; border-right: none; border-bottom: 1px solid var(--line); padding: 48px 24px; }
+      .right { grid-column: 1; padding: 48px 24px; }
+      footer { padding: 20px 24px; flex-direction: column; gap: 8px; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-
-    <div class="label">AI Receptionist — Demo</div>
-
-    <div class="brand">
-      <div class="brand-name">Rain <em>Medi</em> Spa</div>
-      <div class="brand-sub">& Salon &nbsp;·&nbsp; North York, Ontario</div>
+<div class="page">
+ 
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Rain <em>Medi</em> Spa <span style="color:var(--stone);font-size:18px">& Salon</span></div>
+    <div class="header-tag">AI Receptionist — Demo</div>
+  </header>
+ 
+  <!-- LEFT -->
+  <div class="left">
+    <div class="eyebrow" data-anim>Meet Skye</div>
+    <h1 class="hero-title" data-anim>Your front desk,<br><em>always on.</em></h1>
+    <p class="hero-body" data-anim>
+      Skye is Rain's AI receptionist. She handles calls, books appointments, checks availability, answers questions about services and pricing, and connects callers to the team — naturally, any time of day.
+    </p>
+    <div class="caps" data-anim>
+      <div class="cap"><span class="cap-dot"></span>Book, reschedule, and cancel appointments</div>
+      <div class="cap"><span class="cap-dot"></span>Check real-time availability</div>
+      <div class="cap"><span class="cap-dot"></span>Service information and pricing</div>
+      <div class="cap"><span class="cap-dot"></span>Leave a message for the team</div>
+      <div class="cap"><span class="cap-dot"></span>Transfer to the front desk</div>
     </div>
-
-    <div class="divider"></div>
-
-    <div class="card">
-      <div class="skye-label">Meet Skye</div>
-      <div class="card-title">Your virtual front desk, always on.</div>
-      <div class="card-body">
-        Skye handles bookings, answers questions about services and pricing, reschedules appointments, and connects you to the team — just like calling the spa.
-      </div>
-
-      <div class="widget-wrap">
+  </div>
+ 
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="skye-card" data-anim>
+      <div class="skye-name">Skye</div>
+      <div class="skye-role">Virtual Receptionist · Rain Medi Spa</div>
+      <div class="divider-h"></div>
+      <div class="widget-row">
+        <span class="call-label">Tap to speak with Skye</span>
         <elevenlabs-convai agent-id="agent_8101kt57yeffeqwb28vm7t8em1ps"></elevenlabs-convai>
       </div>
-
-      <div class="hint">Tap the button and speak naturally</div>
+      <div class="hint">Talk naturally — she'll take it from there</div>
     </div>
-
-    <div class="caps">
-      <span class="cap">Book appointments</span>
-      <span class="cap">Check availability</span>
-      <span class="cap">Reschedule</span>
-      <span class="cap">Service info & pricing</span>
-      <span class="cap">Leave a message</span>
-    </div>
-
-    <div class="footer">
-      <div class="footer-text">
-        416-449-2099 &nbsp;·&nbsp; <a href="https://rainspasalon.com" target="_blank">rainspasalon.com</a>
+ 
+    <div class="info-strip" data-anim>
+      <div class="info-row">
+        <span class="info-label">Location</span>
+        <span class="info-value">384 Sheppard Ave E, North York</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value">416-449-2099</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Hours</span>
+        <span class="info-value">Mon 10–4 · Tue–Fri 10–9 · Sat 9–6 · Sun 10–6</span>
+      </div>
+      <div class="info-row" style="border-bottom:none">
+        <span class="info-label">Website</span>
+        <span class="info-value"><a href="https://rainspasalon.com" target="_blank">rainspasalon.com</a></span>
       </div>
     </div>
-
   </div>
-
-  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+ 
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">Rain Medi Spa & Salon · North York, Ontario</div>
+    <div class="footer-right">Powered by Quantra AI</div>
+  </footer>
+ 
+</div>
+ 
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+<script>
+  const els = document.querySelectorAll('[data-anim]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(el => obs.observe(el));
+</script>
 </body>
 </html>
