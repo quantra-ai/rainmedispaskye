@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skye — Rain Medi Spa & Salon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rain-deep: #0d1a2b;
+      --rain-blue: #2792dc;
+      --rain-aqua: #9ce6e6;
+      --rain-cream: #f5f0e8;
+      --rain-stone: #8a9aaa;
+      --rain-white: #ffffff;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--rain-deep);
+      color: var(--rain-white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* Background mesh */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(39, 146, 220, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 90% 80%, rgba(156, 230, 230, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(39, 146, 220, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    /* Top label */
+    .label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rain-aqua);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+
+    /* Logo / name */
+    .brand {
+      text-align: center;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      color: var(--rain-white);
+    }
+
+    .brand-name em {
+      font-style: italic;
+      color: var(--rain-aqua);
+    }
+
+    .brand-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rain-stone);
+      margin-top: 10px;
+    }
+
+    /* Divider */
+    .divider {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--rain-aqua), transparent);
+      margin: 32px auto;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.35s forwards;
+    }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(156, 230, 230, 0.12);
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.45s forwards;
+    }
+
+    .skye-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rain-blue);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--rain-white);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .card-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--rain-stone);
+      margin-bottom: 36px;
+    }
+
+    /* Widget container */
+    .widget-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: rgba(138, 154, 170, 0.6);
+      letter-spacing: 0.05em;
+    }
+
+    /* Capabilities */
+    .caps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .cap {
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rain-stone);
+      padding: 6px 14px;
+      border: 1px solid rgba(138, 154, 170, 0.2);
+      border-radius: 100px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 48px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.75s forwards;
+    }
+
+    .footer-text {
+      font-size: 11px;
+      color: rgba(138, 154, 170, 0.4);
+      letter-spacing: 0.08em;
+    }
+
+    .footer-text a {
+      color: rgba(39, 146, 220, 0.6);
+      text-decoration: none;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <div class="label">AI Receptionist — Demo</div>
+
+    <div class="brand">
+      <div class="brand-name">Rain <em>Medi</em> Spa</div>
+      <div class="brand-sub">& Salon &nbsp;·&nbsp; North York, Ontario</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="card">
+      <div class="skye-label">Meet Skye</div>
+      <div class="card-title">Your virtual front desk, always on.</div>
+      <div class="card-body">
+        Skye handles bookings, answers questions about services and pricing, reschedules appointments, and connects you to the team — just like calling the spa.
+      </div>
+
+      <div class="widget-wrap">
+        <elevenlabs-convai agent-id="agent_8101kt57yeffeqwb28vm7t8em1ps"></elevenlabs-convai>
+      </div>
+
+      <div class="hint">Tap the button and speak naturally</div>
+    </div>
+
+    <div class="caps">
+      <span class="cap">Book appointments</span>
+      <span class="cap">Check availability</span>
+      <span class="cap">Reschedule</span>
+      <span class="cap">Service info & pricing</span>
+      <span class="cap">Leave a message</span>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">
+        416-449-2099 &nbsp;·&nbsp; <a href="https://rainspasalon.com" target="_blank">rainspasalon.com</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+</body>
+</html>
